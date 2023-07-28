@@ -1,0 +1,2 @@
+GRANT ALL PRIVILEGES ON *.* TO 'todo_user'@'%';
+FLUSH PRIVILEGES;

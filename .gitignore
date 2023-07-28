@@ -1,1 +1,6 @@
 .env
+/nginx/log
+*.pyc
+__pycache__
+/mysql/data/
+/phpmyadmin/
