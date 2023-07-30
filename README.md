@@ -57,7 +57,7 @@ server
     op.drop_table('test_users') # ### end Alembic commands ###
 3.  alembic upgrade head でマイグレーションを適用
 
-- ./docker_clear.shを実行するとコンテナimage等が消去、初期化される。
+- ./docker_clear.sh を実行するとコンテナ image 等が消去、初期化される。
 
 - 動作不良で困ったら、alembic フォルダ、alembic.ini、mysql フォルダを削除する。
-  データは破壊されるので注意。
+  データベースは破壊されるので注意。
