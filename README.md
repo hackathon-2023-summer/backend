@@ -61,7 +61,3 @@ server
 
 - 動作不良で困ったら、alembic フォルダ、alembic.ini、mysql フォルダを削除する。
   データベースは破壊されるので注意。
-
-
-
-aaaaaaaaaaaa
