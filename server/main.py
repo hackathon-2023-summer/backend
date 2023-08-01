@@ -3,8 +3,10 @@ from sqlalchemy import create_engine
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from passlib.context import CryptContext
 
-from server.models import Base, TestUser
+
+from server.models import Base, UserBase, User
 from dotenv import load_dotenv
 
 # .env ファイルをロード
@@ -19,7 +21,7 @@ engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(bind=engine)
 # app = FastAPI()
 app = FastAPI(root_path="/api")
-
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
 # ブラウザからのリクエストはdockerコンテナのサービス名に基づくURLを
 # 名前解決できない。
@@ -42,8 +44,29 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.post("/users/{user_name}")
-def create_user(user_name: str):
+@app.post("/register")
+async def register(user: UserBase):
+    hashed_password = pwd_context.hash(user.password)
+    db_user = User(user_name=user.username,
+                   password=hashed_password, email=user.email)
+
     with Session(engine) as session:
-        session.add(TestUser(user_name=user_name))
-        session.commit()
+        if session.query(User).filter_by(user_name=db_user.user_name).first():
+            raise HTTPException(
+                status_code=400,
+                detail="Username already exists."
+            )
+        if session.query(User).filter_by(email=db_user.email).first():
+            raise HTTPException(
+                status_code=400,
+                detail="Email already exists."
+            )
+        try:
+            session.add(db_user)
+            session.commit()
+        except IntegrityError:
+            raise HTTPException(
+                status_code=500,
+                detail="Unexpected error. Please try again later."
+            )
+    return {"message": "User registered successfully."}
