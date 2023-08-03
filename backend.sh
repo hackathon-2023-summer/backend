@@ -17,6 +17,8 @@ sleep 5
 
 # only initial migration
 if [ -d "alembic" ]; then 
+  alembic revision --autogenerate -m "default model migration"
+  alembic upgrade head
   echo exist; 
 else  
   alembic init alembic;
@@ -27,7 +29,7 @@ else
   # exchange ./alembic/env.py already updated.
   cp ./env.py ./alembic/env.py
 
-  alembic revision --autogenerate -m "default model migration"
+  #alembic revision --autogenerate -m "default model migration"
   alembic upgrade head
 fi
 

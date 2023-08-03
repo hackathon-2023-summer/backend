@@ -42,6 +42,6 @@ RUN if ! grep -q ":x:$MY_GID:" /etc/group; then groupadd -g $MY_GID appgroup; fi
 
 # pythonの環境はルート権限で作る必要があったので、それらが終わった後で
 # localhostと同じuid,gidのappuserでコンテナを起動させる。
+RUN mkdir /home/appuser/devcon && chown appuser:appgroup /home/appuser/devcon
 USER appuser
-RUN mkdir /home/appuser/devcon
 WORKDIR /home/appuser/devcon
