@@ -20,19 +20,16 @@ DATABASE_URL = f"mysql+pymysql://{user}:{password}@{server}/{db}"
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(bind=engine)
 # app = FastAPI()
-app = FastAPI(root_path="/api")
+app = FastAPI(root_path="/fast")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
 # ブラウザからのリクエストはdockerコンテナのサービス名に基づくURLを
 # 名前解決できない。
-# origins = [
-#     "http://localhost:3000",
-# ]
-
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
-    # allow_origins=["*"],
+    # allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
