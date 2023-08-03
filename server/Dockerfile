@@ -2,8 +2,7 @@
 FROM python:3.9
 
 # 言語・地域情報
-RUN apt-get update
-RUN apt-get -y install locales && \
+RUN apt-get update && apt-get install -y sudo locales && \
   localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
 RUN apt-get install -y --no-install-recommends \
   fonts-ipafont-gothic \
@@ -40,8 +39,13 @@ ARG MY_GID
 RUN if ! grep -q ":x:$MY_GID:" /etc/group; then groupadd -g $MY_GID appgroup; fi && \
   if ! grep -q ":x:$MY_UID:" /etc/passwd; then useradd --uid $MY_UID --gid $MY_GID --create-home appuser; fi
 
-# pythonの環境はルート権限で作る必要があったので、それらが終わった後で
-# localhostと同じuid,gidのappuserでコンテナを起動させる。
-RUN mkdir /home/appuser/devcon && chown appuser:appgroup /home/appuser/devcon
-USER appuser
+# dockerの仕様変更なのか、コンテナはroot権限で完成させねばならなくなったのかも。
+# パスワード無しでroot権限をappuserにも付与する。
+RUN usermod -aG sudo appuser
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN mkdir /home/appuser/devcon 
+# && chown appuser:appgroup /home/appuser/devcon
+#USER appuser
 WORKDIR /home/appuser/devcon
+# ENTRYPOINT ["/bin/sh", "-c"]
+# CMD ["tail -f /dev/null"]
