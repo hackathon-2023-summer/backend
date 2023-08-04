@@ -1,5 +1,6 @@
 import os
-from fastapi import FastAPI,Depends,HTTPException
+import schemas, bcrypt, models, crud
+from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from pymysql import IntegrityError
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +17,8 @@ Base.metadata.create_all(bind=engine)
 # app = FastAPI()
 app = FastAPI(root_path="/fast")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+router = APIRouter()
 
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
 # ブラウザからのリクエストはdockerコンテナのサービス名に基づくURLを
@@ -35,29 +38,26 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.post("/register")
-async def register(user: UserBase, db: Session = Depends(get_db)):
-    hashed_password = pwd_context.hash(user.password)
-    db_user = User(user_name=user.username,
-                   password=hashed_password, email=user.email)
+@router.post("/user/", response_model=schemas.User)
+async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    # パスワードをハッシュ化
+    hashed_password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
+    # passwordが8文字以上であるかをチェック
+    if len(user.password) < 8:
+        raise HTTPException(status_code=400, detail="パスワードは8文字以上である必要があります")
 
-    with Session(engine) as session:
-        if session.query(User).filter_by(user_name=db_user.user_name).first():
-            raise HTTPException(
-                status_code=400,
-                detail="Username already exists."
-            )
-        if session.query(User).filter_by(email=db_user.email).first():
-            raise HTTPException(
-                status_code=400,
-                detail="Email already exists."
-            )
-        try:
-            session.add(db_user)
-            session.commit()
-        except IntegrityError:
-            raise HTTPException(
-                status_code=500,
-                detail="Unexpected error. Please try again later."
-            )
-    return {"message": "User registered successfully."}
+    # Emailの重複をチェックする
+    existing_user = (
+        db.query(models.User).filter(models.User.email == user.email).first()
+    )
+    if existing_user:
+        raise HTTPException(status_code=400, detail="このEmailは既に使用されています")
+    # ハッシュ化されたパスワードをデータベースに保存する
+    user_data = schemas.UserCreate(
+        username=user.username, password=hashed_password, email=user.email
+    )
+
+    return crud.create_user(db=db, user=user_data)
+
+
+app.include_router(router)

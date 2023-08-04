@@ -12,8 +12,8 @@ class UserBase(BaseModel):
 
 
 class User(Base):
-    __tablename__ = 'users'
-    id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
-    user_name = Column(String(100), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
-    email = Column(String(100), nullable=False, unique=True)
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    username = Column(String(100), nullable=False)
+    password = Column(String(100))
+    email = Column(String(100), unique=True)

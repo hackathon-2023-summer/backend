@@ -34,4 +34,5 @@ else
 fi
 
 # start uvicorn server
+export PYTHONPATH=/home/appuser/devcon/server:$PYTHONPATH
 uvicorn server.main:app --reload --host 0.0.0.0 --port ${PORT_BACK}
