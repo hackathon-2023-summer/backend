@@ -1,23 +1,17 @@
 import os
-from sqlalchemy import create_engine
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends,HTTPException
+from pymysql import IntegrityError
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from passlib.context import CryptContext
 
-
+from server.database import get_db, engine
 from server.models import Base, UserBase, User
 from dotenv import load_dotenv
 
 # .env ファイルをロード
 load_dotenv()
 
-user = os.getenv("MYSQL_USER")
-password = os.getenv("MYSQL_PASSWORD")
-server = os.getenv("MYSQL_HOST")
-db = os.getenv("MYSQL_DATABASE")
-DATABASE_URL = f"mysql+pymysql://{user}:{password}@{server}/{db}"
-engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(bind=engine)
 # app = FastAPI()
 app = FastAPI(root_path="/fast")
@@ -42,7 +36,7 @@ def read_root():
 
 
 @app.post("/register")
-async def register(user: UserBase):
+async def register(user: UserBase, db: Session = Depends(get_db)):
     hashed_password = pwd_context.hash(user.password)
     db_user = User(user_name=user.username,
                    password=hashed_password, email=user.email)
