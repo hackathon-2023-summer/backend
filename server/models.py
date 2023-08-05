@@ -1,15 +1,7 @@
-from sqlalchemy import Column, Integer, String, Sequence
-from sqlalchemy.ext.declarative import declarative_base
-from pydantic import BaseModel, Field
+from sqlalchemy import Column, Integer, String
+from server.utils.depends import get_base
 
-Base = declarative_base()
-
-
-class UserBase(BaseModel):
-    username: str = Field(...)
-    password: str = Field(...)
-    email: str = Field(...)
-
+Base = get_base()
 
 class User(Base):
     __tablename__ = "users"

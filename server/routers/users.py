@@ -1,15 +1,18 @@
 import schemas, models, crud
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
-from server.database import get_db
 from passlib.context import CryptContext
+from server.database import get_db
+from server.utils.depends import get_pwd_context
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
-
 @router.post("/user/", response_model=schemas.User)
-async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+async def create_user(
+    user: schemas.UserCreate,
+    db: Session = Depends(get_db),
+    pwd_context: CryptContext = Depends(get_pwd_context),
+):
     # passwordが8文字以上であるかをチェック
     if len(user.password) < 8:
         raise HTTPException(status_code=400, detail="パスワードは8文字以上である必要があります")

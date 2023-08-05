@@ -1,16 +1,6 @@
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from server.database import engine
-from server.models import Base
 from server.routers import users
-
-from dotenv import load_dotenv
-
-# .env ファイルをロード
-load_dotenv()
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(root_path="/fast", debug=True)
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
