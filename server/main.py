@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from server.routers import users
+from server.services import auth
+from server.utils.depends import get_pwd_context
+
+pwd_context=get_pwd_context()
 
 app = FastAPI(root_path="/fast", debug=True)
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
@@ -16,8 +20,10 @@ app.add_middleware(
 )
 
 app.include_router(users.router)
+app.include_router(auth.router)
 
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    hashed_password = pwd_context.hash("hahaha")
+    return {"hashed_password": hashed_password}
