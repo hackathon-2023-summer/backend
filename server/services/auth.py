@@ -31,16 +31,6 @@ def verify_password(password, db_password):
     return pwd_context.verify(password, db_password)
 
 
-# def get_password_hash(password):
-#     return pwd_context.hash(password)
-
-
-# def get_user(db, username: str):
-#     if username in db:
-#         user_data = db[username]
-#         return schemas.User(**user_data)
-
-
 def get_user(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 

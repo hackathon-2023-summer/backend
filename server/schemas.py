@@ -9,3 +9,10 @@ class UserCreate(BaseModel):
 # ユーザー全体のデータ構造
 class User(UserCreate):
     id: int
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str or None = None
