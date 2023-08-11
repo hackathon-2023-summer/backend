@@ -1,4 +1,4 @@
-import schemas, models, crud
+from server import schemas, models, crud
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from passlib.context import CryptContext
@@ -6,6 +6,7 @@ from server.database import get_db
 from server.utils.depends import get_pwd_context
 
 router = APIRouter()
+
 
 @router.post("/user/", response_model=schemas.User)
 async def create_user(
