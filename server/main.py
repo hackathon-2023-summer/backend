@@ -28,3 +28,4 @@ app.include_router(s3upload.router)
 def read_root():
     hashed_password = pwd_context.hash("hahaha")
     return {"hashed_password": hashed_password}
+ 
