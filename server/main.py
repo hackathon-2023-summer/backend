@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from server.routers import users
-from server.services import auth
+from server.services import auth_routes, s3upload
 from server.utils.depends import get_pwd_context
 
-pwd_context=get_pwd_context()
+pwd_context = get_pwd_context()
 
 app = FastAPI(root_path="/fast", debug=True)
 # AWSなどにデプロイしURLのドメインが確定したら指定する。
@@ -20,7 +20,8 @@ app.add_middleware(
 )
 
 app.include_router(users.router)
-app.include_router(auth.router)
+app.include_router(auth_routes.router)
+app.include_router(s3upload.router)
 
 
 @app.get("/")

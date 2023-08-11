@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
+# from pydantic import BaseModel
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
@@ -14,13 +14,13 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 router = APIRouter()
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+# class Token(BaseModel):
+#     access_token: str
+#     token_type: str
 
 
-class TokenData(BaseModel):
-    username: str or None = None
+# class TokenData(BaseModel):
+#     username: str or None = None
 
 
 pwd_context = get_pwd_context()
@@ -29,16 +29,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def verify_password(password, db_password):
     return pwd_context.verify(password, db_password)
-
-
-# def get_password_hash(password):
-#     return pwd_context.hash(password)
-
-
-# def get_user(db, username: str):
-#     if username in db:
-#         user_data = db[username]
-#         return schemas.User(**user_data)
 
 
 def get_user(db: Session, username: str):
@@ -81,7 +71,7 @@ async def get_current_user(
         if username is None:
             raise credential_exception
 
-        token_data = TokenData(username=username)
+        token_data = schemas.TokenData(username=username)
     except JWTError:
         raise credential_exception
 
@@ -97,7 +87,7 @@ async def get_current_user(
 #     return current_user
 
 
-@router.post("/token", response_model=Token)
+@router.post("/token", response_model=schemas.Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):

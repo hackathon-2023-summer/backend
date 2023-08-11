@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import date as PythonDate
 
 
+
 # ユーザーを作るためのデータ構造
 class UserCreate(BaseModel):
     username: str
@@ -13,6 +14,15 @@ class UserCreate(BaseModel):
 class User(UserCreate):
     id: int
 
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str or None = None
 
 # レシピを保存するためのデータ構造
 class RecipeCreate(BaseModel):
