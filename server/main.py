@@ -27,3 +27,4 @@ app.include_router(auth.router)
 def read_root():
     hashed_password = pwd_context.hash("hahaha")
     return {"hashed_password": hashed_password}
+ 

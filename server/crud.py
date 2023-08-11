@@ -1,4 +1,4 @@
-import schemas, models
+from . import schemas, models
 from sqlalchemy.orm import Session
 
 #ユーザー登録
@@ -8,3 +8,12 @@ def create_user(db: Session, user: schemas.User):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+#レシピ登録
+def create_recipe(db: Session,recipe: schemas.Recipe):
+    db_recipe = models.Recipe(recipename=recipe.recipename,category=recipe.category,date=recipe.date,photo=recipe.photo)
+    db.add(db_recipe)
+    db.commit()
+    db.refresh(db_recipe)
+    return db_recipe
+
