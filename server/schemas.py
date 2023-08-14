@@ -25,6 +25,7 @@ class TokenData(BaseModel):
 
 # レシピを保存するためのデータ構造
 class RecipeCreate(BaseModel):
+    user_id: int
     date: PythonDate
     recipename: str
     category: str
@@ -34,15 +35,14 @@ class RecipeCreate(BaseModel):
 
 # レシピ全体のデータ構造
 class Recipe(RecipeCreate):
-    recipe_id: int
+    id: int
 
 
-# レシピ材料を保存するためのデータ構造
 class RecipeIngredientCreate(BaseModel):
+    recipe_id: int
     ingredientname: str
     quantity: int
 
 
-# レシピ材料全体のデータ構造
 class RecipeIngredient(RecipeIngredientCreate):
-    recipeingredient_id: int
+    id: int

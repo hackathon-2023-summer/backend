@@ -29,7 +29,7 @@ else
   # exchange ./alembic/env.py already updated.
   cp ./env.py ./alembic/env.py
 
-  #alembic revision --autogenerate -m "default model migration"
+  alembic revision --autogenerate -m "default model migration"
   alembic upgrade head
 fi
 
