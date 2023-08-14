@@ -1,6 +1,7 @@
-from sqlalchemy import Column,ForeignKey,Integer,String,Enum,Text,Boolean,Date
+from sqlalchemy import Column,ForeignKey,Integer,String,Enum,Text,Boolean,Date as SQLDate
 from server.utils.depends import get_base
 from pydantic import BaseModel
+from sqlalchemy.orm import relationship
 # from datetime import date
 
 Base = get_base()
@@ -35,7 +36,7 @@ class User(Base):
 class RecipeModel(BaseModel):
     recipe_id: int
     id: int
-    date: Date
+    date: SQLDate
     recipename: str
     category: str
     photo: str
@@ -53,11 +54,12 @@ class Recipe(Base):
     category =Column(Enum('beef', 'pork', 'chicken', 'fish', 'vegetable', 'other'),nullable=False)
     photo =Column(Text,nullable=False)
     is_favorite=Column(Boolean)
+    recipeIngredient = relationship('RecipeIngredient')
 
-# class RecipeIngredient(Base):
-#     __tablename__ = 'recipeingredients'
-#     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     ingredientname = Column(String)
-#     quantity = Column(Integer)
-#     recipe_id = Column(Integer, ForeignKey('recipes.id', ondelete='SET NULL'), nullable=False)
-#     recipe = relationship('Recipe', back_populates='ingredients')
+class RecipeIngredient(Base):
+    __tablename__ = 'recipeingredients'
+    recipeingredient_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    ingredientname = Column(String(255),index=True)
+    quantity = Column(Integer)
+    recipe_id = Column(Integer, ForeignKey('recipes.recipe_id', ondelete='SET NULL'), nullable=True)
+    recipe = relationship('Recipe', back_populates='recipeIngredient')

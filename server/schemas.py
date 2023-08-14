@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-import Date 
+from datetime import date as PythonDate 
 
 # ユーザーを作るためのデータ構造
 class UserCreate(BaseModel):
@@ -13,7 +13,7 @@ class User(UserCreate):
 
 # レシピを保存するためのデータ構造
 class RecipeCreate(BaseModel):
-    date: Date
+    date: PythonDate
     recipename: str
     category: str
     photo: str
@@ -22,3 +22,12 @@ class RecipeCreate(BaseModel):
 # レシピ全体のデータ構造
 class Recipe(RecipeCreate):
     recipe_id: int
+
+# レシピ材料を保存するためのデータ構造
+class RecipeIngredientCreate(BaseModel):
+    ingredientname: str
+    quantity: int
+
+# レシピ材料全体のデータ構造
+class RecipeIngredient(RecipeIngredientCreate):
+    recipeingredient_id: int
