@@ -10,6 +10,8 @@ from sqlalchemy import (
 )
 from enum import Enum as PyEnum
 from server.utils.depends import get_base
+from pydantic import BaseModel
+from sqlalchemy.orm import relationship
 
 # from datetime import date
 
@@ -23,6 +25,16 @@ class User(Base):
     username = Column(String(100), nullable=False)
     password = Column(String(100))
     email = Column(String(100), unique=True)
+
+
+class RecipeModel(BaseModel):
+    recipe_id: int
+    id: int
+    date: SQLDate
+    recipename: str
+    category: str
+    photo: str
+    is_favorite: bool
 
 
 class CategoryEnum(PyEnum):
@@ -44,3 +56,18 @@ class Recipe(Base):
     category = Column(Enum(CategoryEnum), nullable=False)  # ここで外部で定義したEnumを使用
     photo = Column(TEXT, nullable=False)
     is_favorite = Column(BOOLEAN)
+    recipeIngredient = relationship("RecipeIngredient")
+
+
+class RecipeIngredient(Base):
+    __tablename__ = "recipeingredients"
+    __table_args__ = {"extend_existing": True}
+    recipeingredient_id = Column(
+        Integer, primary_key=True, index=True, autoincrement=True
+    )
+    ingredientname = Column(String(255), index=True)
+    quantity = Column(Integer)
+    recipe_id = Column(
+        Integer, ForeignKey("recipes.recipe_id", ondelete="SET NULL"), nullable=True
+    )
+    recipe = relationship("Recipe", back_populates="recipeIngredient")

@@ -25,3 +25,14 @@ def create_recipe(db: Session, recipe: schemas.Recipe):
     db.commit()
     db.refresh(db_recipe)
     return db_recipe
+
+
+# レシピ材料登録
+def create_recipeingredient(db: Session, ingredient: schemas.RecipeIngredient):
+    db_recipeingredient = models.RecipeIngredient(
+        ingredientname=ingredient.ingredientname, quantity=ingredient.quantity
+    )
+    db.add(db_recipeingredient)
+    db.commit()
+    db.refresh(db_recipeingredient)
+    return db_recipeingredient
