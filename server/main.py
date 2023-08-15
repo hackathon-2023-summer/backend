@@ -1,4 +1,4 @@
-from backend.server.routers import routeS3upload
+from server.routers import routeS3upload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from server.routers import (
