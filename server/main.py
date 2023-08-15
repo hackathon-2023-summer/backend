@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from server.routers import users, recipes, recipeIngredients
+from server.routers import routeRecipeIngredients, routeRecipes, routeUsers
 from server.services import auth_routes, s3upload
 from server.db.session import get_pwd_context
 
@@ -19,11 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users.router)
+app.include_router(routeUsers.router)
 app.include_router(auth_routes.router)
 app.include_router(s3upload.router)
-app.include_router(recipes.router)
-app.include_router(recipeIngredients.router)
+app.include_router(routeRecipes.router)
+app.include_router(routeRecipeIngredients.router)
 
 
 @app.get("/")

@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from server.db.database import get_db
 from server.db.session import get_pwd_context
-from server import schemas, models
+from server.schemas.token import TokenData
+from server.models.user import User
+
 
 SECRET_KEY = "983885f48547befc2f27fb040d508e1aa5accab6f7b261fca54c6341a7ca54f7"
 ALGORITHM = "HS256"
@@ -28,7 +30,7 @@ def verify_password(password, db_password):
 
 
 def get_user(db: Session, username: str):
-    return db.query(models.User).filter(models.User.username == username).first()
+    return db.query(User).filter(User.username == username).first()
 
 
 async def get_current_user(
@@ -45,7 +47,7 @@ async def get_current_user(
         if username is None:
             raise credential_exception
 
-        token_data = schemas.TokenData(username=username)
+        token_data = TokenData(username=username)
     except JWTError:
         raise credential_exception
 

@@ -1,13 +1,14 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-# from pydantic import BaseModel
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from server.db.session import get_pwd_context
 from server.db.database import get_db
-from server import schemas, models
+from server.schemas.token import Token, TokenData
+from server.schemas.user import UserCreate
+from server.models.user import User
 
 SECRET_KEY = "983885f48547befc2f27fb040d508e1aa5accab6f7b261fca54c6341a7ca54f7"
 ALGORITHM = "HS256"
@@ -23,7 +24,7 @@ def verify_password(password, db_password):
 
 
 def get_user(db: Session, username: str):
-    return db.query(models.User).filter(models.User.username == username).first()
+    return db.query(User).filter(User.username == username).first()
 
 
 def authenticate_user(db: Session, username: str, password: str):
@@ -62,7 +63,7 @@ async def get_current_user(
         if username is None:
             raise credential_exception
 
-        token_data = schemas.TokenData(username=username)
+        token_data = TokenData(username=username)
     except JWTError:
         raise credential_exception
 
@@ -72,13 +73,13 @@ async def get_current_user(
     return user
 
 
-# async def get_current_active_user(current_user: schemas.User = Depends(get_current_user)):
+# async def get_current_active_user(current_user: User = Depends(get_current_user)):
 #     if current_user.disabled:
 #         raise HTTPException(status_code=400, detail="Inactive user")
 #     return current_user
 
 
-@router.post("/token", response_model=schemas.Token)
+@router.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
@@ -96,11 +97,11 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me/", response_model=schemas.UserCreate)
-async def read_users_me(current_user: schemas.UserCreate = Depends(get_current_user)):
+@router.get("/users/me/", response_model=UserCreate)
+async def read_users_me(current_user: UserCreate = Depends(get_current_user)):
     return current_user
 
 
 @router.get("/users/me/items")
-async def read_own_items(current_user: schemas.UserCreate = Depends(get_current_user)):
+async def read_own_items(current_user: UserCreate = Depends(get_current_user)):
     return [{"item_id": 1, "owner": current_user}]
