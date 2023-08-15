@@ -6,8 +6,8 @@ from server.db.database import get_db
 
 from server.schemas.token import Token
 from server.schemas.user import UserCreate
-from server.services.authentication import authenticate_user, get_current_user
-from server.services.token import create_access_token
+from server.services.toAuth import authenticate_user, get_current_user
+from server.services.toToken import create_access_token
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 router = APIRouter()

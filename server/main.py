@@ -1,7 +1,12 @@
+from backend.server.routers import routeS3upload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from server.routers import routeAuth, routeRecipeIngredients, routeRecipes, routeUsers
-from server.services import s3upload
+from server.routers import (
+    routeAuth,
+    routeRecipeIngredients,
+    routeRecipes,
+    routeUsers,
+)
 from server.db.session import get_pwd_context
 
 pwd_context = get_pwd_context()
@@ -21,7 +26,7 @@ app.add_middleware(
 
 app.include_router(routeUsers.router)
 app.include_router(routeAuth.router)
-app.include_router(s3upload.router)
+app.include_router(routeS3upload.router)
 app.include_router(routeRecipes.router)
 app.include_router(routeRecipeIngredients.router)
 
