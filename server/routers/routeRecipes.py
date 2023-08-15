@@ -1,8 +1,8 @@
 # レシピの一覧
-import crud
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from server.db.database import get_db
+from server.services.toRecipe import create
 from server.schemas.recipe import Recipe, RecipeCreate
 
 router = APIRouter()
@@ -15,4 +15,4 @@ async def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
         recipename=recipe.recipename, category=recipe.category, date=recipe.date
     )
 
-    return crud.create_recipe(db=db, recipe=recipe_data)
+    return create(db=db, recipe=recipe_data)

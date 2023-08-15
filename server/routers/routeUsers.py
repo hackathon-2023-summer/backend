@@ -1,4 +1,3 @@
-from server import crud
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from passlib.context import CryptContext
@@ -6,6 +5,7 @@ from server.db.database import get_db
 from server.db.session import get_pwd_context
 from server.schemas.user import User, UserCreate
 from server.models.user import User as UserModel
+from server.services.toUser import create
 
 router = APIRouter()
 pwd_context = get_pwd_context()
@@ -34,4 +34,4 @@ async def create_user(
         username=user.username, password=hashed_password, email=user.email
     )
 
-    return crud.create_user(db=db, user=user_data)
+    return create(db=db, user=user_data)

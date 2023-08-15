@@ -1,11 +1,9 @@
 # レシピ食材の一覧
-
-import crud
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException
-from passlib.context import CryptContext
+from fastapi import APIRouter, Depends
 from server.db.database import get_db
 from server.schemas.recipeIngredient import RecipeIngredient, RecipeIngredientCreate
+from server.services.toRecipeingredient import create
 
 router = APIRouter()
 
@@ -19,4 +17,4 @@ async def create_recipeingridient(
         ingredientname=ingredient.ingredientname, quantity=ingredient.quantity
     )
 
-    return crud.create_recipeingredient(db=db, ingredient=recipeingredient_data)
+    return create(db=db, ingredient=recipeingredient_data)
