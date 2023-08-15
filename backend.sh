@@ -15,23 +15,26 @@ do
 done
 sleep 5
 
-# only initial migration
+# remove previous alembic configuration.
 if [ -d "alembic" ]; then 
-  alembic revision --autogenerate -m "default model migration"
-  alembic upgrade head
-  echo exist; 
-else  
-  alembic init alembic;
-  # Set DATABASE_URL
-  DATABASE_URL="mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}/${MYSQL_DATABASE}"
-  # Replace sqlalchemy.url in alembic.ini
-  sed -i "s|sqlalchemy.url = .*|sqlalchemy.url = ${DATABASE_URL}|" /home/appuser/devcon/alembic.ini
-  # exchange ./alembic/env.py already updated.
-  cp ./env.py ./alembic/env.py
-
-  alembic revision --autogenerate -m "default model migration"
-  alembic upgrade head
+  rm -rf alembic
+  rm alembic.ini
 fi
+
+# renew alembic configuration
+alembic init alembic;
+# Set DATABASE_URL
+DATABASE_URL="mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}/${MYSQL_DATABASE}"
+# Replace sqlalchemy.url in alembic.ini
+sed -i "s|sqlalchemy.url = .*|sqlalchemy.url = ${DATABASE_URL}|" /home/appuser/devcon/alembic.ini
+# exchange ./alembic/env.py already updated.
+cp ./env.py ./alembic/env.py
+
+# migration
+alembic revision --autogenerate -m "migration by backend.sh"
+alembic upgrade head
+chown -R appuser:appgroup alembic
+chown appuser:appgroup alembic.ini
 
 # start uvicorn server
 export PYTHONPATH=/home/appuser/devcon/server:$PYTHONPATH

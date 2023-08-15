@@ -2,8 +2,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
-from server.utils.depends import get_pwd_context
-from server.database import get_db
+from server.db.database import get_db
+from server.db.session import get_pwd_context
 from server import schemas, models
 
 SECRET_KEY = "983885f48547befc2f27fb040d508e1aa5accab6f7b261fca54c6341a7ca54f7"

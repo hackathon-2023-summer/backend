@@ -1,29 +1,20 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 # from pydantic import BaseModel
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-from server.utils.depends import get_pwd_context
-from server.database import get_db
+from server.db.session import get_pwd_context
+from server.db.database import get_db
 from server import schemas, models
 
 SECRET_KEY = "983885f48547befc2f27fb040d508e1aa5accab6f7b261fca54c6341a7ca54f7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 router = APIRouter()
-
-
-# class Token(BaseModel):
-#     access_token: str
-#     token_type: str
-
-
-# class TokenData(BaseModel):
-#     username: str or None = None
-
-
 pwd_context = get_pwd_context()
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 

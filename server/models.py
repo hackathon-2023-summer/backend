@@ -9,10 +9,8 @@ from sqlalchemy import (
     Date as SQLDate,
 )
 from enum import Enum as PyEnum
-from server.utils.depends import get_base
+from server.models.base import Base
 from sqlalchemy.orm import relationship
-
-Base = get_base()
 
 
 class User(Base):

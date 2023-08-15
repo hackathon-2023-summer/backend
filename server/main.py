@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from server.routers import users, recipes, recipeIngredients
 from server.services import auth_routes, s3upload
-from server.utils.depends import get_pwd_context
+from server.db.session import get_pwd_context
 
 pwd_context = get_pwd_context()
 

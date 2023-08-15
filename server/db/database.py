@@ -1,7 +1,4 @@
-from sqlalchemy.orm import sessionmaker
-from server.utils.depends import get_engine
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False,bind=get_engine())
+from .session import SessionLocal
 
 '''下のコードの説明chatGPTより
 このコードは、FastAPIでデータベース接続を管理するための非常に一般的な方法です。ここで使われているのはPythonのジェネレーターとyieldキーワードです。

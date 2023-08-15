@@ -1,8 +1,8 @@
 import os
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from passlib.context import CryptContext
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
+from passlib.context import CryptContext
 
 load_dotenv()
 user = os.getenv("MYSQL_USER")
@@ -11,13 +11,10 @@ server = os.getenv("MYSQL_HOST")
 db = os.getenv("MYSQL_DATABASE")
 DATABASE_URL = f"mysql+pymysql://{user}:{password}@{server}/{db}"
 
-Base = declarative_base()
+engine = create_engine(DATABASE_URL, echo=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
+# Dependの引数にするには関数型で渡す。インスタンスはエラーになる。
 def get_pwd_context():
     return CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def get_engine():
-    return create_engine(DATABASE_URL, echo=True)
-
-def get_base():
-    return Base

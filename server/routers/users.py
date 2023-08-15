@@ -2,10 +2,11 @@ from server import schemas, models, crud
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 from passlib.context import CryptContext
-from server.database import get_db
-from server.utils.depends import get_pwd_context
+from server.db.database import get_db
+from server.db.session import get_pwd_context
 
 router = APIRouter()
+pwd_context = get_pwd_context()
 
 
 @router.post("/user/", response_model=schemas.User)
