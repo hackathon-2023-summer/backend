@@ -3,14 +3,18 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from server.db.database import get_db
-from server import schemas
-from server.services.authentication import authenticate_user,get_current_user
+
+# from server import schemas
+from server.schemas.token import Token
+from server.schemas.user import UserCreate
+from server.services.authentication import authenticate_user, get_current_user
 from server.services.token import create_access_token
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 router = APIRouter()
 
-@router.post("/token", response_model=schemas.Token)
+
+@router.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
@@ -28,11 +32,11 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me/", response_model=schemas.UserCreate)
-async def read_users_me(current_user: schemas.UserCreate = Depends(get_current_user)):
+@router.get("/users/me/", response_model=UserCreate)
+async def read_users_me(current_user: UserCreate = Depends(get_current_user)):
     return current_user
 
 
 @router.get("/users/me/items")
-async def read_own_items(current_user: schemas.UserCreate = Depends(get_current_user)):
+async def read_own_items(current_user: UserCreate = Depends(get_current_user)):
     return [{"item_id": 1, "owner": current_user}]
