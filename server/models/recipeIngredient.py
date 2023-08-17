@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
+from server.models.base import Base
 from sqlalchemy.orm import relationship
-from .base import Base
+
 
 class RecipeIngredient(Base):
     __tablename__ = "recipeingredients"
@@ -11,4 +12,4 @@ class RecipeIngredient(Base):
     )
     ingredientname = Column(String(255), index=True)
     quantity = Column(Integer)
-    recipe = relationship("Recipe", back_populates="recipeIngredients")
+    recipe = relationship("Recipe", back_populates="ingredients")

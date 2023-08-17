@@ -1,7 +1,17 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date as SQLDate, Enum, BOOLEAN, TEXT
-from sqlalchemy.orm import relationship
-from .base import Base
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    Date as SQLDate,
+    Enum,
+    BOOLEAN,
+    TEXT,
+)
+from server.models.base import Base
 from enum import Enum as PyEnum
+from sqlalchemy.orm import relationship
+
 
 class CategoryEnum(PyEnum):
     beef = "beef"
@@ -25,4 +35,4 @@ class Recipe(Base):
     photo = Column(TEXT, nullable=False)
     is_favorite = Column(BOOLEAN)
     user = relationship("User", back_populates="recipes")
-    recipeIngredients = relationship("RecipeIngredient", back_populates="recipe")
+    ingredients = relationship("RecipeIngredient", back_populates="recipe")
