@@ -1,3 +1,4 @@
+import os
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -6,11 +7,11 @@ from server.db.database import get_db
 from server.db.session import get_pwd_context
 from server.schemas.token import TokenData
 from server.models.user import User
+from dotenv import load_dotenv
 
-
-SECRET_KEY = "983885f48547befc2f27fb040d508e1aa5accab6f7b261fca54c6341a7ca54f7"
-ALGORITHM = "HS256"
-
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 pwd_context = get_pwd_context()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

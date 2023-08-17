@@ -5,6 +5,7 @@ from server.routers import (
     routeAuth,
     routeRecipeIngredients,
     routeRecipes,
+    routeTestRecipes,
     routeUsers,
 )
 from server.db.session import get_pwd_context
@@ -28,6 +29,7 @@ app.include_router(routeUsers.router)
 app.include_router(routeAuth.router)
 app.include_router(routeS3upload.router)
 app.include_router(routeRecipes.router)
+app.include_router(routeTestRecipes.router)
 app.include_router(routeRecipeIngredients.router)
 
 
