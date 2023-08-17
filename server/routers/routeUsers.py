@@ -11,7 +11,7 @@ router = APIRouter()
 pwd_context = get_pwd_context()
 
 
-@router.post("/user/", response_model=User)
+@router.post("/register", response_model=User)
 async def create_user(
     user: UserCreate,
     db: Session = Depends(get_db),
