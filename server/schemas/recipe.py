@@ -4,12 +4,13 @@ from datetime import date as PythonDate
 
 # レシピを保存するためのデータ構造
 class RecipeCreate(RecipeBase):
-    user_id: int
-    date: PythonDate
-    recipename: str
-    category: str
-    photo: str
-    is_favorite: bool
+    pass
+    # user_id: int
+    # date: PythonDate
+    # recipename: str
+    # category: str
+    # photo: str
+    # is_favorite: bool
 
 
 # レシピ全体のデータ構造

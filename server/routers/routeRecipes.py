@@ -12,7 +12,12 @@ router = APIRouter()
 @router.post("/recipe/", response_model=Recipe)
 async def create_recipe(recipe: RecipeCreate, db: Session = Depends(get_db)):
     recipe_data = RecipeCreate(
-        recipename=recipe.recipename, category=recipe.category, date=recipe.date
+        user_id = recipe.user_id,
+        date=recipe.date, 
+        recipename=recipe.recipename,
+        category=recipe.category, 
+        photo = recipe.photo,
+        is_favorite = recipe.is_favorite
     )
 
     return create(db=db, recipe=recipe_data)
