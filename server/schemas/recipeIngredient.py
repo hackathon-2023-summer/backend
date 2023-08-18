@@ -3,8 +3,7 @@ from server.schemas.common import RecipeIngredientBase
 
 
 class RecipeIngredientCreate(RecipeIngredientBase):
-    ingredientname: str
-    quantity: int
+    pass
 
 
 class RecipeIngredient(RecipeIngredientCreate):

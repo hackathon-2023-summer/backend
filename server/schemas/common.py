@@ -1,5 +1,6 @@
 from typing import TypeVar
 from pydantic import BaseModel
+from server.models.recipe import CategoryEnum
 from datetime import date as PythonDate
 
 
@@ -15,7 +16,7 @@ class RecipeBase(BaseModel):
     user_id: int
     date: PythonDate
     recipename: str
-    category: str
+    category: CategoryEnum
     photo: str
     is_favorite: bool
 
