@@ -14,3 +14,4 @@
 
 - マイグレーションファイルを削除しても大丈夫と分かったので、backend.sh で docker-compose.yml を実行するたびに
   alembic フォルダと alembic.ini を削除更新するようにした。
+- insertrecipe.sql は FastAPI docs からアップロードする。

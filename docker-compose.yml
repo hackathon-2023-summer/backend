@@ -39,6 +39,8 @@ services:
       - hackathon_network
     volumes:
       - ./mysql/data/db:/var/lib/mysql/ToDo_DB
+    environment:
+      - TZ=Asia/Tokyo
     env_file:
       - .env
     # DB health check by sending ping with mysqladmin
