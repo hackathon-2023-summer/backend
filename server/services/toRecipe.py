@@ -3,9 +3,9 @@ from server.schemas.recipe import RecipeBase
 from server.models.recipe import Recipe as RecipeModel
 
 
-def create(db: Session, recipe: RecipeBase):
+def create(db: Session, user_id: int, recipe: RecipeBase):
     db_recipe = RecipeModel(
-        user_id=recipe.user_id,
+        user_id=user_id,
         recipename=recipe.recipename,
         category=recipe.category,
         date=recipe.date,

@@ -13,8 +13,9 @@ RUN apt-get clean && \
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
-ENV TZ JST-9
 ENV TERM xterm
+ENV TZ=Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # コンテナ内に開放するポート。docker-compose.ymlと一致させる。
 ARG PORT_BACK

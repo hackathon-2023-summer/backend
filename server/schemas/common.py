@@ -13,7 +13,6 @@ class UserBase(BaseModel):
 
 # レシピを保存するためのデータ構造
 class RecipeBase(BaseModel):
-    user_id: int
     date: PythonDate
     recipename: str
     category: CategoryEnum

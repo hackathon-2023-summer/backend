@@ -26,9 +26,7 @@ class Recipe(Base):
     __tablename__ = "recipes"
     __table_args__ = {"extend_existing": True}
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(
-        Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True
-    )
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
     date = Column(SQLDate, nullable=False)
     recipename = Column(String(100), index=True, nullable=False)
     category = Column(Enum(CategoryEnum), nullable=False)
