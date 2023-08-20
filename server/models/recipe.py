@@ -35,4 +35,5 @@ class Recipe(Base):
     photo = Column(TEXT, nullable=False)
     is_favorite = Column(BOOLEAN)
     user = relationship("User", back_populates="recipes")
-    ingredients = relationship("RecipeIngredient", back_populates="recipe")
+    ingredients = relationship("RecipeIngredient", back_populates="recipes")
+    sequences = relationship("RecipeSequence", back_populates="recipes")

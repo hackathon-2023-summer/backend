@@ -26,6 +26,14 @@ class RecipeIngredientBase(BaseModel):
     quantity: int
 
 
+class RecipeSequenceBase(BaseModel):
+    step_number :int
+    photo = str
+    comment = str
+
+
+
 User = TypeVar("User")
 Recipe = TypeVar("Recipe")
 RecipeIngredient = TypeVar("RecipeIngredient")
+RecipeSequence = TypeVar("RecipeSequence")
