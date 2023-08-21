@@ -63,19 +63,19 @@ def run_migrations_online() -> None:
     from sqlalchemy import create_engine
     import os
     from dotenv import load_dotenv
+
     load_dotenv()
 
     user = os.getenv("MYSQL_USER")
     password = os.getenv("MYSQL_PASSWORD")
     server = os.getenv("MYSQL_HOST")
     db = os.getenv("MYSQL_DATABASE")
-    DATABASE_URL = f"mysql+pymysql://{user}:{password}@{server}/{db}"
+    port = os.getenv("MYSQL_PORT")
+    DATABASE_URL = f"mysql+pymysql://{user}:{password}@{server}:{port}/{db}"
     connectable = create_engine(DATABASE_URL)
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
