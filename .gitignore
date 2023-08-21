@@ -5,3 +5,4 @@ __pycache__
 /mysql/data/
 /phpmyadmin/
 /alembic/versions/
+.git.aws
