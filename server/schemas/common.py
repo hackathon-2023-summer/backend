@@ -22,14 +22,16 @@ class RecipeBase(BaseModel):
 
 
 class RecipeIngredientBase(BaseModel):
+    recipe_id: int
     ingredientname: str
     quantity: int
 
 
 class RecipeSequenceBase(BaseModel):
-    step_number :int
-    photo = str
-    comment = str
+    recipe_id: int
+    step_number: int
+    photo: str
+    comment: str
 
 
 

@@ -9,6 +9,7 @@ from sqlalchemy import (
     TEXT,
 )
 from server.models.base import Base
+from . import user,recipeIngredient,recipeSequence
 from enum import Enum as PyEnum
 from sqlalchemy.orm import relationship
 

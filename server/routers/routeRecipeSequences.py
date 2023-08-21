@@ -6,8 +6,8 @@ from server.schemas.token import TokenData
 from server.services.toRecipesequence import create
 from server.services.toAuth import get_current_user
 from server.schemas.recipeSequence import (
-    RecipeSecuence,
-    RecipeSecuenceCreate,
+    RecipeSequence,
+    RecipeSequenceCreate,
 )
 
 
@@ -15,10 +15,10 @@ router = APIRouter()
 
 
 # リクエストボディからレシピ順を作成して、データベースに保存する
-@router.post("/recipes/{recipe_id}/sequences/", response_model=RecipeSecuence)
+@router.post("/recipes/{recipe_id}/sequences/", response_model=RecipeSequence)
 async def create_recipesequence(
     recipe_id: int,
-    sequence: RecipeSecuenceCreate,
+    sequence: RecipeSequenceCreate,
     current_user: TokenData = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):

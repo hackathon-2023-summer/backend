@@ -2,9 +2,9 @@ from typing import List
 from server.schemas.common import RecipeSequenceBase
 
 
-class RecipeSecuenceCreate(RecipeSequenceBase):
+class RecipeSequenceCreate(RecipeSequenceBase):
     pass
 
 
-class RecipeSecuence(RecipeSecuenceCreate):
+class RecipeSequence(RecipeSequenceCreate):
     id: int
