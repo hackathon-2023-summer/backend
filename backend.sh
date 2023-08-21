@@ -15,7 +15,7 @@ do
 done
 sleep 5
 
-remove previous alembic configuration.
+#remove previous alembic configuration.
 if [ -d "alembic" ]; then 
   rm -rf alembic
   rm alembic.ini
