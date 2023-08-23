@@ -9,6 +9,7 @@ from sqlalchemy import (
     TEXT,
 )
 from server.models.base import Base
+from . import user, recipeIngredient, recipeSequence
 from enum import Enum as PyEnum
 from sqlalchemy.orm import relationship
 
@@ -34,3 +35,4 @@ class Recipe(Base):
     is_favorite = Column(BOOLEAN)
     user = relationship("User", back_populates="recipes")
     ingredients = relationship("RecipeIngredient", back_populates="recipe")
+    sequences = relationship("RecipeSequence", back_populates="recipe")

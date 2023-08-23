@@ -21,10 +21,20 @@ class RecipeBase(BaseModel):
 
 
 class RecipeIngredientBase(BaseModel):
+    recipe_id: int
     ingredientname: str
     quantity: int
+
+
+class RecipeSequenceBase(BaseModel):
+    recipe_id: int
+    step_number: int
+    photo: str
+    comment: str
+
 
 
 User = TypeVar("User")
 Recipe = TypeVar("Recipe")
 RecipeIngredient = TypeVar("RecipeIngredient")
+RecipeSequence = TypeVar("RecipeSequence")

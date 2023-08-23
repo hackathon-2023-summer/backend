@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from server.models.base import Base
+from . import recipe
 
 
 class User(Base):
