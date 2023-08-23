@@ -5,7 +5,10 @@ from server.db.database import get_db
 from server.db.session import get_pwd_context
 from server.schemas.user import User, UserCreate
 from server.models.user import User as UserModel
+from server.schemas.common import UserRead
 from server.services.toUser import create
+from server.schemas.token import TokenData
+from server.services.toAuth import get_current_user
 
 router = APIRouter()
 pwd_context = get_pwd_context()
@@ -35,3 +38,11 @@ async def create_user(
     )
 
     return create(db=db, user=user_data)
+
+
+@router.get("/user/", response_model=UserRead)
+def get_user(
+    db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)
+):
+    user = db.query(UserModel).filter(UserModel.id == current_user.id).first()
+    return user  # UserRead型に自動変換されます
