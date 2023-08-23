@@ -63,7 +63,7 @@ def get_recipes_for_date_range(
 
 
 @router.get("/categories")
-def get_categories():
+def get_categories(current_user: TokenData = Depends(get_current_user)):
     return [e.value for e in CategoryEnum]
 
 
