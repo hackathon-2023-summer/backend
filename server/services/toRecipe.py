@@ -9,7 +9,8 @@ def create(db: Session, user_id: int, recipe: RecipeBase):
         recipename=recipe.recipename,
         category=recipe.category,
         date=recipe.date,
-        photo=recipe.photo,
+        imageURL=recipe.imageURL,
+        overview=recipe.overview,
         is_favorite=recipe.is_favorite,
     )
     db.add(db_recipe)

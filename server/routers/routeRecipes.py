@@ -9,6 +9,7 @@ from server.services.toRecipe import create
 from server.services.toAuth import get_current_user
 from server.schemas.recipe import Recipe, RecipeCreate
 from server.models.recipe import Recipe as RecipeModel
+from server.models.recipe import CategoryEnum
 import shutil
 from pathlib import Path
 
@@ -27,25 +28,43 @@ async def create_recipe(
         date=recipe.date,
         recipename=recipe.recipename,
         category=recipe.category,
-        photo=recipe.photo,
+        imageURL=recipe.imageURL,
+        overview=recipe.overview,
         is_favorite=recipe.is_favorite,
     )
     return create(db=db, user_id=user_id, recipe=recipe_data)
 
 
-def get_user_recipes(start_date: PythonDate, end_date: PythonDate, db: Session = Depends(get_db), current_user: TokenData = Depends(get_current_user)) -> List[Recipe]:
+def get_user_recipes(
+    start_date: PythonDate,
+    end_date: PythonDate,
+    db: Session = Depends(get_db),
+    current_user: TokenData = Depends(get_current_user),
+) -> List[Recipe]:
     user_id = current_user.id
     # データベースから指定ユーザーと日付範囲のレシピを取得
-    recipes = db.query(RecipeModel).filter(
-        RecipeModel.user_id == user_id,
-        RecipeModel.date >= start_date,
-        RecipeModel.date <= end_date,
-    ).all()
+    recipes = (
+        db.query(RecipeModel)
+        .filter(
+            RecipeModel.user_id == user_id,
+            RecipeModel.date >= start_date,
+            RecipeModel.date <= end_date,
+        )
+        .all()
+    )
     return recipes
 
+
 @router.get("/recipes/")
-def get_recipes_for_date_range(recipes: List[Recipe] = Depends(get_user_recipes)) -> List[Recipe]:
+def get_recipes_for_date_range(
+    recipes: List[Recipe] = Depends(get_user_recipes),
+) -> List[Recipe]:
     return recipes
+
+
+@router.get("/categories")
+def get_categories():
+    return [e.value for e in CategoryEnum]
 
 
 @router.post("/uploadsql/")

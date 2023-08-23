@@ -11,12 +11,20 @@ class UserBase(BaseModel):
     email: str
 
 
+# 読み出し専用のデータ構造
+class UserRead(BaseModel):
+    id: int
+    username: str
+    email: str
+
+
 # レシピを保存するためのデータ構造
 class RecipeBase(BaseModel):
     date: PythonDate
     recipename: str
     category: CategoryEnum
-    photo: str
+    imageURL: str
+    overview: str
     is_favorite: bool
 
 
