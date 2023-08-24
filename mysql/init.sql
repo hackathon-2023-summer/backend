@@ -1,2 +1,2 @@
-GRANT ALL PRIVILEGES ON *.* TO 'todo_user'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'antoquino_admin'@'%';
 FLUSH PRIVILEGES;
