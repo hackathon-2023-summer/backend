@@ -3,7 +3,7 @@ from server.schemas.common import RecipeSequenceBase
 
 
 class RecipeSequenceCreate(RecipeSequenceBase):
-    pass
+    recipe_id: int
 
 
 class RecipeSequence(RecipeSequenceCreate):

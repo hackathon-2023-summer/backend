@@ -6,10 +6,7 @@ from server.schemas.token import TokenData
 from server.services.toRecipeingredient import create
 from server.services.toAuth import get_current_user
 from server.models.recipe import Recipe as RecipeModel
-from server.schemas.recipeIngredient import (
-    RecipeIngredient,
-    RecipeIngredientCreate,
-)
+from server.schemas.recipeIngredient import RecipeIngredient, RecipeIngredientCreate
 
 
 router = APIRouter()
@@ -28,6 +25,8 @@ async def create_recipeingridient(
 
     # レシピが存在しない、または現在のユーザーがレシピの所有者でない場合はエラー
     if recipe is None or recipe.user_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized to add ingredients to this recipe")
+        raise HTTPException(
+            status_code=403, detail="Not authorized to add ingredients to this recipe"
+        )
 
     return create(db=db, recipe_id=recipe_id, ingredient=ingredient)
