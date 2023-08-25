@@ -16,10 +16,9 @@ class RecipeSequence(Base):
     __table_args__ = {"extend_existing": True}
     id = Column(Integer, primary_key=True, autoincrement=True)
     recipe_id = Column(
-        Integer, ForeignKey("recipes.id", ondelete="SET NULL"), nullable=True
+        Integer, ForeignKey("recipes.id", ondelete="CASCADE"), nullable=True
     )
     step_number = Column(Integer, nullable=False)
-    # photo = Column(TEXT,nullable=True)
+    imageURL = Column(TEXT, nullable=True)
     comment = Column(TEXT, nullable=False)
-    # timestamp = Column(TIMESTAMP)
     recipe = relationship("Recipe", back_populates="sequences")

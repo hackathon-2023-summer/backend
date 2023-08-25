@@ -2,7 +2,7 @@ from datetime import date as PythonDate
 from typing import List
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, UploadFile, HTTPException, status
 from server.db.database import get_db
 from server.schemas.token import TokenData
 from server.services.toRecipe import create
@@ -65,6 +65,32 @@ def get_recipes_for_date_range(
 @router.get("/categories")
 def get_categories(current_user: TokenData = Depends(get_current_user)):
     return [e.value for e in CategoryEnum]
+
+
+@router.get("/recipe/")
+def get_recipe(
+    recipe_id: int,
+    db: Session = Depends(get_db),
+    current_user: TokenData = Depends(get_current_user),
+) -> Recipe:
+    user_id = current_user.id
+    # データベースから指定ユーザーと指定IDのレシピを取得
+    recipe = (
+        db.query(RecipeModel)
+        .filter(
+            RecipeModel.user_id == user_id,
+            RecipeModel.id == recipe_id,  # == で比較することで指定IDのレシピだけを取得
+        )
+        .first()  # first を使用して一番最初の一致するレシピを取得
+    )
+
+    # レシピが存在しない場合のエラーハンドリング
+    if not recipe:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found"
+        )
+
+    return recipe
 
 
 @router.post("/uploadsql/")

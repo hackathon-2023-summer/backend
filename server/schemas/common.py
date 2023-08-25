@@ -35,11 +35,9 @@ class RecipeIngredientBase(BaseModel):
 
 
 class RecipeSequenceBase(BaseModel):
-    recipe_id: int
     step_number: int
-    photo: str
+    imageURL: str
     comment: str
-
 
 
 User = TypeVar("User")

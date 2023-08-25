@@ -1,18 +1,17 @@
 from sqlalchemy.orm import Session
-from server.schemas.recipeSequence import RecipeSequenceCreate
+from server.schemas.recipeSequence import RecipeSequenceBase
 from server.models.recipeSequence import (
     RecipeSequence as RecipeSequenceModel,
 )
 
 
 # レシピ順登録
-def create(db: Session, recipe_id: int, sequence: RecipeSequenceCreate):
+def create(db: Session, recipe_id: int, sequence: RecipeSequenceBase):
     db_recipesequence = RecipeSequenceModel(
         recipe_id=recipe_id,
         step_number=sequence.step_number,
-        photo=sequence.photo,
+        imageURL=sequence.imageURL,
         comment=sequence.comment,
-        # timestamp=sequence.timestamp,
     )
     db.add(db_recipesequence)
     db.commit()
